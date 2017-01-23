@@ -74,29 +74,30 @@ int main(int argc, char *argv[])
         return Usage();
     }
 
-	string work_dir = argv[argc-1];
-	int index = work_dir.rfind("\\");
+    string work_dir = argv[argc-1];
+    int index = work_dir.rfind("\\");
 
-	if (index == string::npos)
-	{
-		printf("work_dir error! Use %s\n", work_dir);
-		return -1;
-	}
+    if (index == string::npos)
+    {
+	printf("work_dir error! Use %s\n", work_dir);
+	return -1;
+    }
 
-	work_dir.assign(work_dir, 0, index);
+    work_dir.assign(work_dir, 0, index);
 
-	WINDOWS::SetCurrentDirectory(work_dir.c_str());
-
-	g_log_file_ptr = fopen("inslog.txt", "w");
-	if (g_log_file_ptr == NULL)
-	{
-		puts("Error open file!");
-		return -1;
-	}
-	
-	INS_AddInstrumentFunction(Instruction, NULL);
+    WINDOWS::SetCurrentDirectory(work_dir.c_str());
  
-	PIN_AddFiniFunction(Fini, 0);
+    g_log_file_ptr = fopen("inslog.txt", "w");
+	
+    if (g_log_file_ptr == NULL)
+    {
+	puts("Error open file!");
+	return -1;
+    }
+	
+    INS_AddInstrumentFunction(Instruction, NULL);
+ 
+    PIN_AddFiniFunction(Fini, 0);
     PIN_StartProgram();
     
     return 0;
